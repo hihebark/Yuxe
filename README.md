@@ -3,11 +3,13 @@
 <p>Extract music from compilation, music mix on Youtube</p>
 <h3>Requirement:</h3>
 Only youtube_dl you can install it with
+and you need to:
+    chmod +x yuxe.py
 <code>pip3 install youtube_dl</code>
 <h3>Usage:</h3>
 
     t(.___.t) - Yuxe
-    usage: yuxe.py [-h] [-ylink YLINK] [-t-list T_LIST]
+    usage: ./yuxe.py [-h] [-ylink YLINK] [-t-list T_LIST]
 
     Yuxe - Extract music from compilation, music mix on Youtube
 
