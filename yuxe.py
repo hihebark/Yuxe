@@ -1,6 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+#Copyleft ↄ⃝  2017 Hihebark
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#( Copyleft license ) any later version.
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import unicode_literals
 import argparse
 from libs.mLogger import MyLogger
@@ -9,7 +23,7 @@ import subprocess
 import time
 
 if sys.version[0] == '2':
-    print("Required Python 3")
+    print("[e] Required Python 3")
     exit(1)
 
 try:
@@ -18,7 +32,7 @@ except:
     print('''[e] install youtube_dl: pip install -U youtube_dl. or pip3 install youtube_dl''')
     exit(1)
 
-BANNER = "\033[92mt(.___.t) - Yuxe\033[0m"
+BANNER = "\033[92m*w(.___.*w) - Yuxe\033[0m"
 
 def my_hook(d):
     if d['status'] == 'finished':
@@ -66,25 +80,17 @@ def main():
     vName, vLenght = getInfo(vlink)
     vLenght = time.strftime('%H:%M:%S', time.gmtime(vLenght))
     print("Video name: \033[91m{}\033[0m Lenght: \033[91m{}\033[0m".format(vName, vLenght))
-    makeFile(vName)
     downloadVideo(vlink)
-    print('[!]Reading track list ...')
+    makeFile(vName)
+    print('[!] Reading track list ...')
     m_input = 'tmp/test.mp3'
     for i in range(sum(1 for line in open(t_list))):
-        print("[*]Extracting: {}".format(getLineList(t_list, i).split(' ', 1)[1]))
+        print("[*] Extracting: {}".format(getLineList(t_list, i).split(' ', 1)[1]))
         m_start = getLineList(t_list, i).split(' ', 1)[0]
         m_toend = vLenght if i+1 == sum(1 for line in open(t_list)) else getLineList(t_list, i+1).split(' ', 1)[0]
         m_output = vName+'/'+getLineList(t_list, i).split(' ', 1)[1]+'.mp3'
-        subprocess.call(["ffmpeg -hide_banner -loglevel panic -ss {0} -t {1} -i {2} '{3}'".format(m_start, m_toend, m_input, m_output)], shell=True)
+        subprocess.call(["ffmpeg -hide_banner -loglevel panic -ss {0} -to {1} -i {2} '{3}'".format(m_start, m_toend, m_input, m_output)], shell=True)
 
 if __name__ == '__main__':
     print(BANNER)
     main()
-    
-    
-    
-    
-    
-    
-    
-    
