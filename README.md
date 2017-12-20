@@ -1,12 +1,13 @@
 <h1>Yuxe</h1>
 <h3>Description:</h3>
-<p>Extract music from compilation, music mix on Youtube</p>
+<p>Extract music from compilation, music mix on Youtube, 
+Why download one music file whene you can dowload them all separately.</p>
 <h3>Requirement:</h3>
 Only youtube_dl you can install it with:
 
     pip3 install youtube_dl
 
-and you need to:
+and you need to for the `ffmpeg`:
 
     chmod +x yuxe.py
 

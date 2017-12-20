@@ -21,6 +21,7 @@ from libs.mLogger import MyLogger
 import os, sys
 import subprocess
 import time
+from datetime import datetime
 
 if sys.version[0] == '2':
     print("[e] Required Python 3")
@@ -29,10 +30,13 @@ if sys.version[0] == '2':
 try:
     import youtube_dl
 except:
-    print('''[e] install youtube_dl: pip install -U youtube_dl. or pip3 install youtube_dl''')
+    print('[e] install youtube_dl')
     exit(1)
 
-BANNER = "\033[92m*w(.___.*w) - Yuxe\033[0m"
+BANNER = """\033[92m  .----.
+t(.___.t) - Yuxe
+  `----\033[0m"""
+FMT = '%H:%M:%S'
 
 def my_hook(d):
     if d['status'] == 'finished':
@@ -71,26 +75,38 @@ def getLineList(t_list, m_line_nbr):
     return (open(t_list).readlines()[m_line_nbr]).rstrip('\n')
 
 def main():
-    parser = argparse.ArgumentParser(description="Yuxe - Extract music from compilation, music mix on Youtube")
-    parser.add_argument("-ylink", help="Link to the youtube video")
-    parser.add_argument('-t-list', help="Track List")
-    args = parser.parse_args()
-    vlink = args.ylink
-    t_list = args.t_list
+
+    parser  = argparse.ArgumentParser(description="Yuxe - Extract music from compilation, music mix on Youtube")
+    parser.add_argument('-ylink', '-y', help="Link to the youtube video", required=True)
+    parser.add_argument('-t-list', '-t', help="Track List", required=True)
+
+    args    = parser.parse_args()
+    vlink   = args.ylink
+    t_list  = args.t_list
+
     vName, vLenght = getInfo(vlink)
-    vLenght = time.strftime('%H:%M:%S', time.gmtime(vLenght))
+    vLenght = time.strftime(FMT, time.gmtime(vLenght))
+
     print("Video name: \033[91m{}\033[0m Lenght: \033[91m{}\033[0m".format(vName, vLenght))
+
     downloadVideo(vlink)
     makeFile(vName)
-    print('[!] Reading track list ...')
-    m_input = 'tmp/test.mp3'
-    for i in range(sum(1 for line in open(t_list))):
-        print("[*] Extracting: {}".format(getLineList(t_list, i).split(' ', 1)[1]))
-        m_start = getLineList(t_list, i).split(' ', 1)[0]
-        m_toend = vLenght if i+1 == sum(1 for line in open(t_list)) else getLineList(t_list, i+1).split(' ', 1)[0]
-        m_output = vName+'/'+getLineList(t_list, i).split(' ', 1)[1]+'.mp3'
-        subprocess.call(["ffmpeg -hide_banner -loglevel panic -ss {0} -to {1} -i {2} '{3}'".format(m_start, m_toend, m_input, m_output)], shell=True)
 
+    print('[!] Reading track list ...')
+    m_input = 'tmp/tmpfile.mp3'
+    for mLine in range(sum(1 for line in open(t_list))):
+
+        m_start_track = getLineList(t_list, mLine).split(' ', 1)[0]
+        if (mLine+1) < sum(1 for line in open(t_list)):
+            m_duration_track = datetime.strptime(getLineList(t_list, mLine+1).split(' ', 1)[0], FMT) - datetime.strptime(m_start_track, FMT)
+        else:
+            m_duration_track = datetime.strptime(vLenght, FMT) - datetime.strptime(m_start_track, FMT)
+        m_output = vName+'/'+getLineList(t_list, mLine).split(' ', 1)[1]+'.mp3'
+        print("[*] Extracting: {0} duration: {1}"
+            .format(getLineList(t_list, mLine).split(' ', 1)[1], m_duration_track))
+        subprocess.call(["ffmpeg -hide_banner -loglevel panic -ss {0} -t {1} -i {2} '{3}'"
+            .format(m_start_track, m_duration_track, m_input, m_output)], shell=True)
+    os.system("rm -f /tmp/tmpfile.mp3")
 if __name__ == '__main__':
     print(BANNER)
     main()
