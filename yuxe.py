@@ -42,7 +42,8 @@ def my_hook(d):
     if d['status'] == 'finished':
         print("[!] Done downloading.")
     if d['status'] == 'downloading':
-        print('\rDownloading {} | Estimation: {}'.format(d['_percent_str'], d['_eta_str']), end='', flush=True)
+        print('\rDownloading {} | Estimation: {}'
+            .format(d['_percent_str'], d['_eta_str']), end='', flush=True)
 
 def makeFile(mName):
     try:
