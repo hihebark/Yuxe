@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/hihebark/Yuxe.svg?branch=master)](https://travis-ci.org/hihebark/Yuxe)
 <h1>Yuxe</h1>
 <h3>Description:</h3>
 <p>Extract music from compilation, music mix on Youtube, 
