@@ -36,6 +36,7 @@ except:
 BANNER = """\033[92m  .----.
 t(.___.t) - Yuxe
   `----\033[0m"""
+
 FMT = '%H:%M:%S'
 
 def my_hook(d):
