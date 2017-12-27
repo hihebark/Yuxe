@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 
 #Copyleft ↄ⃝  2017 Hihebark
@@ -50,7 +51,10 @@ def makeFile(mName):
     try:
         os.makedirs(mName)
     except IOError as e:
-        pass
+        print(e)
+
+def shellquote(s):
+    return "'" + s.replace("'", "'\\''") + "'"
 
 def getInfo(vlink, ydl_opts = {'logger': MyLogger()}):
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -60,7 +64,7 @@ def getInfo(vlink, ydl_opts = {'logger': MyLogger()}):
 
 def downloadVideo(vlink):
     ydl_opts = {
-    'outtmpl': 'tmp/test.mp3',
+    'outtmpl': 'tmp/tmpfile.mp3',
     'format': 'bestaudio/best',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
@@ -96,18 +100,19 @@ def main():
 
     print('[!] Reading track list ...')
     m_input = 'tmp/tmpfile.mp3'
+    #https://stackoverflow.com/questions/37886305/datetime-get-the-hour-in-2-digit-format
     for mLine in range(sum(1 for line in open(t_list))):
 
-        m_start_track = getLineList(t_list, mLine).split(' ', 1)[0]
+        m_start_track = getLineList(t_list, mLine).split(' - ', 1)[0]
         if (mLine+1) < sum(1 for line in open(t_list)):
-            m_duration_track = datetime.strptime(getLineList(t_list, mLine+1).split(' ', 1)[0], FMT) - datetime.strptime(m_start_track, FMT)
+            m_duration_track = datetime.strptime(getLineList(t_list, mLine+1).split(' - ', 1)[0], FMT) - datetime.strptime(m_start_track, FMT)
         else:
             m_duration_track = datetime.strptime(vLenght, FMT) - datetime.strptime(m_start_track, FMT)
-        m_output = vName+'/'+getLineList(t_list, mLine).split(' ', 1)[1]+'.mp3'
+        m_output = vName+'/'+getLineList(t_list, mLine).split(' - ', 1)[1]+'.mp3'
         print("[*] Extracting: {0} duration: {1}"
-            .format(getLineList(t_list, mLine).split(' ', 1)[1], m_duration_track))
-        subprocess.call(["ffmpeg -hide_banner -loglevel panic -ss {0} -t {1} -i {2} '{3}'"
-            .format(m_start_track, m_duration_track, m_input, m_output)], shell=True)
+            .format(getLineList(t_list, mLine).split(' - ', 1)[1], m_duration_track))
+        subprocess.call(["ffmpeg -hide_banner -loglevel fatal -ss {0} -t {1} -i {2} {3}"
+            .format(m_start_track, m_duration_track, shellquote(m_input), shellquote(m_output))], shell=True)
     os.system("rm -f /tmp/tmpfile.mp3")
 if __name__ == '__main__':
     print(BANNER)
