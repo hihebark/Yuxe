@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/hihebark/Yuxe.svg?branch=master)](https://travis-ci.org/hihebark/Yuxe)
 #Yuxe
-->  .----.<-
-->t(.___.t) - Yuxe<-
-->  `---- <-
+  .----.
+t(.___.t) - Yuxe
+  `---- 
 
 ##Description:
 Extract music from compilation, music mix on Youtube, 
