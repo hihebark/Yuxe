@@ -1,13 +1,17 @@
 [![Build Status](https://travis-ci.org/hihebark/Yuxe.svg?branch=master)](https://travis-ci.org/hihebark/Yuxe)
 
-#Yuxe
+Yuxe
+====
 
-##Description:
+
+Description:
+------------
 
 Extract music from compilation, music mix on Youtube, 
 Why download one music file whene you can dowload them all separately.
 
-##Requirement:
+Requirement:
+------------
 
 Only youtube_dl you can install it with:
 
@@ -17,7 +21,8 @@ and you need to for the `ffmpeg`:
 
     chmod +x yuxe.py
 
-##Usage:
+Usage:
+------
 
       .----.
     t(.___.t) - Yuxe
