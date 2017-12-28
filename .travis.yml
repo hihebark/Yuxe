@@ -5,4 +5,4 @@ install:
     - pip install -r requirements.txt
 sudo: enable
 script: 
-  - python3 yuxe.py 
+  - python3 yuxe.py -y https://www.youtube.com/watch?v=vteS1g7lkZk -t "tlist.txt"
