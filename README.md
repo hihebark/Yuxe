@@ -24,17 +24,21 @@ and you need to for the `ffmpeg`:
 Usage:
 ------
 
-      .----.
-    t(.___.t) - Yuxe
-      `----
-    usage: yuxe.py [-h] -ylink YLINK -t-list T_LIST
+`python3 yuxe.py -y https://www.youtube.com/watch?v=VIDEO_ID -t tlist.txt -sl ' - '`
 
-    Yuxe - Extract music from compilation, music mix on Youtube
+    .----.
+  t(.___.t) - Yuxe
+    `----
+  usage: yuxe.py [-h] -ylink YLINK -t-list T_LIST [-split-list SPLIT_LIST]
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      -ylink YLINK, -y YLINK
-                            Link to the youtube video
-      -t-list T_LIST, -t T_LIST
-                            Track List
+  Yuxe - Extract music from compilation, music mix on youtube
+
+  optional arguments:
+    -h, --help            show this help message and exit
+    -ylink YLINK, -y YLINK
+                          Link to the youtube video
+    -t-list T_LIST, -t T_LIST
+                          Track List
+    -split-list SPLIT_LIST, -sl SPLIT_LIST
+                          the char between the time and the name of the song
 

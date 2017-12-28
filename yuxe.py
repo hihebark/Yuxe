@@ -2,7 +2,7 @@
 
 # -*- coding: utf-8 -*-
 
-#Copyleft ↄ⃝  2017 Hihebark
+#Copyleft 2017 Hihebark
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, either version 3 of the License, or
@@ -42,7 +42,7 @@ FMT = '%H:%M:%S'
 
 def my_hook(d):
     if d['status'] == 'finished':
-        print("[!] Done downloading.")
+        print("\n[!] Done downloading.")
     if d['status'] == 'downloading':
         print('\rDownloading {} | Estimation: {}'
             .format(d['_percent_str'], d['_eta_str']), end='', flush=True)
@@ -85,10 +85,12 @@ def main():
     parser  = argparse.ArgumentParser(description="Yuxe - Extract music from compilation, music mix on Youtube")
     parser.add_argument('-ylink', '-y', help="Link to the youtube video", required=True)
     parser.add_argument('-t-list', '-t', help="Track List", required=True)
+    parser.add_argument('-split-list', '-sl', help="the char between the time and the name of the song")
 
-    args    = parser.parse_args()
-    vlink   = args.ylink
-    t_list  = args.t_list
+    args        = parser.parse_args()
+    vlink       = args.ylink
+    t_list      = args.t_list
+    split_list  = " " if args.split_list is None else args.split_list
 
     vName, vLenght = getInfo(vlink)
     vLenght = time.strftime(FMT, time.gmtime(vLenght))
@@ -103,17 +105,17 @@ def main():
     #https://stackoverflow.com/questions/37886305/datetime-get-the-hour-in-2-digit-format
     for mLine in range(sum(1 for line in open(t_list))):
 
-        m_start_track = getLineList(t_list, mLine).split(' - ', 1)[0]
+        m_start_track = getLineList(t_list, mLine).split(split_list, 1)[0]
         if (mLine+1) < sum(1 for line in open(t_list)):
-            m_duration_track = datetime.strptime(getLineList(t_list, mLine+1).split(' - ', 1)[0], FMT) - datetime.strptime(m_start_track, FMT)
+            m_duration_track = datetime.strptime(getLineList(t_list, mLine+1).split(split_list, 1)[0], FMT) - datetime.strptime(m_start_track, FMT)
         else:
             m_duration_track = datetime.strptime(vLenght, FMT) - datetime.strptime(m_start_track, FMT)
-        m_output = vName+'/'+getLineList(t_list, mLine).split(' - ', 1)[1]+'.mp3'
+        m_output = vName+'/'+getLineList(t_list, mLine).split(split_list, 1)[1]+'.mp3'
         print("[*] Extracting: {0} duration: {1}"
-            .format(getLineList(t_list, mLine).split(' - ', 1)[1], m_duration_track))
+            .format(getLineList(t_list, mLine).split(split_list, 1)[1], m_duration_track))
         subprocess.call(["ffmpeg -hide_banner -loglevel fatal -ss {0} -t {1} -i {2} {3}"
             .format(m_start_track, m_duration_track, shellquote(m_input), shellquote(m_output))], shell=True)
-    os.system("rm -f /tmp/tmpfile.mp3")
+    os.system("rm -f tmp/tmpfile.mp3")
 if __name__ == '__main__':
     print(BANNER)
     main()
