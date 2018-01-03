@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/hihebark/Yuxe.svg?branch=master)](https://travis-ci.org/hihebark/Yuxe)
+[![AUR](https://img.shields.io/aur/license/yaourt.svg?style=flat-square)](https://github.com/hihebark/Yuxe)
 
 Yuxe
 ====
